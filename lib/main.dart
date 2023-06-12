@@ -100,15 +100,7 @@ class MyApp extends StatelessWidget {
                   child: ScrollConfiguration(
                     behavior: ScrollConfiguration.of(context)
                         .copyWith(scrollbars: false),
-                    child: Stack(
-                      fit: StackFit.expand,
-                      children: [
-                        Container(
-                          color: anthem_theme.Theme.panel.border,
-                        ),
-                        MainWindow(key: mainWindowKey),
-                      ],
-                    ),
+                    child: MainWindow(key: mainWindowKey),
                   ),
                 ),
               ),

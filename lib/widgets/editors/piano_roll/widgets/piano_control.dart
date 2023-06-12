@@ -1,5 +1,5 @@
 /*
-  Copyright (C) 2021 - 2023 Joshua Wade
+  Copyright (C) 2021 - 2023 Joshua Wade, Budislav Stepanov
 
   This file is part of Anthem.
 
@@ -177,7 +177,7 @@ class _WhiteKey extends StatelessWidget {
       height: widgetHeight - 1,
       decoration: BoxDecoration(
         borderRadius: const BorderRadius.horizontal(right: Radius.circular(1)),
-        color: const Color(0xFFAAB7C0).withOpacity(opacity),
+        color: const Color(0xFFC0C0C0).withOpacity(opacity),
       ),
       child: showKeyText
           ? Center(
@@ -201,7 +201,7 @@ class _WhiteKey extends StatelessWidget {
   }
 }
 
-const blackKeyColor = Color(0xFF3D484F);
+const blackKeyColor = Color(0xFF444444);
 
 class _BlackKey extends StatelessWidget {
   const _BlackKey({Key? key, required this.keyNumber, required this.keyHeight})
@@ -214,7 +214,7 @@ class _BlackKey extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       decoration: const BoxDecoration(
-        borderRadius: BorderRadius.horizontal(right: Radius.circular(4)),
+        borderRadius: BorderRadius.horizontal(right: Radius.circular(1)),
         color: blackKeyColor,
       ),
       height: keyHeight - 1,

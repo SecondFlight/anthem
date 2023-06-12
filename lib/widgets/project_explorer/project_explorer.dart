@@ -1,5 +1,5 @@
 /*
-  Copyright (C) 2021 - 2023 Joshua Wade
+  Copyright (C) 2021 - 2023 Joshua Wade, Budislav Stepanov
 
   This file is part of Anthem.
 
@@ -116,7 +116,6 @@ class _ProjectExplorerState extends State<ProjectExplorer> {
 
     return Background(
       type: BackgroundType.dark,
-      borderRadius: const BorderRadius.all(Radius.circular(4)),
       child: Padding(
         padding: const EdgeInsets.all(6),
         child: Column(

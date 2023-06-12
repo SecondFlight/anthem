@@ -101,10 +101,7 @@ class _PianoRollState extends State<PianoRoll> {
         value: viewModel!,
         child: PianoRollTimeViewProvider(
           child: Container(
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(4),
-              color: Theme.panel.main,
-            ),
+            color: Theme.panel.main,
             child: Padding(
               padding: const EdgeInsets.all(6),
               child: Column(
@@ -575,26 +572,21 @@ class _PianoRollContentState extends State<_PianoRollContent>
                         borderRadius:
                             const BorderRadius.all(Radius.circular(4)),
                       ),
-                      child: ClipRRect(
-                        borderRadius:
-                            const BorderRadius.all(Radius.circular(4)),
-                        child: Column(
-                          children: [
-                            timeline,
-                            Container(color: Theme.panel.border, height: 1),
-                            Expanded(
-                              child: Row(
-                                crossAxisAlignment: CrossAxisAlignment.stretch,
-                                children: [
-                                  pianoControl,
-                                  Container(
-                                      color: Theme.panel.border, width: 1),
-                                  noteRenderArea,
-                                ],
-                              ),
+                      child: Column(
+                        children: [
+                          timeline,
+                          Container(color: Theme.panel.border, height: 1),
+                          Expanded(
+                            child: Row(
+                              crossAxisAlignment: CrossAxisAlignment.stretch,
+                              children: [
+                                pianoControl,
+                                Container(color: Theme.panel.border, width: 1),
+                                noteRenderArea,
+                              ],
                             ),
-                          ],
-                        ),
+                          ),
+                        ],
                       ),
                     ),
                   ),

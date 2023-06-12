@@ -1,5 +1,5 @@
 /*
-  Copyright (C) 2021 - 2023 Joshua Wade
+  Copyright (C) 2021 - 2023 Joshua Wade, Budislav Stepanov
 
   This file is part of Anthem.
 
@@ -75,10 +75,7 @@ class _PatternEditorState extends State<PatternEditor> {
         },
         child: SizeChangedLayoutNotifier(
           child: Container(
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(4),
-              color: Theme.panel.main,
-            ),
+            color: Theme.panel.main,
             child: Padding(
               padding: const EdgeInsets.all(6.0),
               child: Column(

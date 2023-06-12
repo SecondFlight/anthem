@@ -114,30 +114,27 @@ class _PatternPickerState extends State<PatternPicker> {
                         ),
                         color: Theme.panel.accentDark,
                       ),
-                      child: ClipRRect(
-                        borderRadius: BorderRadius.circular(4),
-                        child: SingleChildScrollView(
-                          controller: scrollController,
-                          child: Observer(builder: (context) {
-                            return Column(
-                              crossAxisAlignment: CrossAxisAlignment.stretch,
-                              children: project.song.patternOrder
-                                  .map(
-                                    (patternID) => Padding(
-                                      padding: const EdgeInsets.only(bottom: 1),
-                                      child: SizedBox(
-                                        height: patternHeight,
-                                        child: Clip.fromPattern(
-                                          patternID: patternID,
-                                          ticksPerPixel: 5,
-                                        ),
+                      child: SingleChildScrollView(
+                        controller: scrollController,
+                        child: Observer(builder: (context) {
+                          return Column(
+                            crossAxisAlignment: CrossAxisAlignment.stretch,
+                            children: project.song.patternOrder
+                                .map(
+                                  (patternID) => Padding(
+                                    padding: const EdgeInsets.only(bottom: 1),
+                                    child: SizedBox(
+                                      height: patternHeight,
+                                      child: Clip.fromPattern(
+                                        patternID: patternID,
+                                        ticksPerPixel: 5,
                                       ),
                                     ),
-                                  )
-                                  .toList(),
-                            );
-                          }),
-                        ),
+                                  ),
+                                )
+                                .toList(),
+                          );
+                        }),
                       ),
                     ),
                   ),

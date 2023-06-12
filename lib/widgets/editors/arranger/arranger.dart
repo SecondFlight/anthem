@@ -106,10 +106,7 @@ class _ArrangerState extends State<Arranger> {
             id: 'arranger',
             shortcutHandler: controller!.onShortcut,
             child: Container(
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(4),
-                color: Theme.panel.main,
-              ),
+              color: Theme.panel.main,
               child: Padding(
                 padding: const EdgeInsets.all(6),
                 child: Column(
@@ -467,66 +464,62 @@ class _ArrangerContentState extends State<_ArrangerContent>
         border: Border.all(color: Theme.panel.border),
         borderRadius: BorderRadius.circular(4),
       ),
-      child: ClipRRect(
-        borderRadius: BorderRadius.circular(4),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            SizedBox(
-              height: _timelineHeight,
-              child: Row(
-                children: [
-                  const SizedBox(width: trackHeaderWidth),
-                  Container(width: 1, color: Theme.panel.border),
-                  Expanded(
-                    child: Observer(builder: (context) {
-                      return Timeline.arrangement(
-                        timeViewAnimationController:
-                            _timeViewAnimationController,
-                        timeViewStartAnimation: _timeViewStartAnimation,
-                        timeViewEndAnimation: _timeViewEndAnimation,
-                        arrangementID: project.song.activeArrangementID,
-                      );
-                    }),
-                  ),
-                ],
-              ),
-            ),
-            Container(height: 1, color: Theme.panel.border),
-            Expanded(
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  SizedBox(
-                    width: trackHeaderWidth,
-                    child: AnimatedBuilder(
-                      animation: _verticalScrollPositionAnimationController,
-                      builder: (context, child) {
-                        return _TrackHeaders(
-                          verticalScrollPosition:
-                              _verticalScrollPositionAnimation.value,
-                        );
-                      },
-                    ),
-                  ),
-                  Container(width: 1, color: Theme.panel.border),
-                  Expanded(
-                    child: _ArrangerCanvas(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          SizedBox(
+            height: _timelineHeight,
+            child: Row(
+              children: [
+                const SizedBox(width: trackHeaderWidth),
+                Container(width: 1, color: Theme.panel.border),
+                Expanded(
+                  child: Observer(builder: (context) {
+                    return Timeline.arrangement(
+                      timeViewAnimationController: _timeViewAnimationController,
                       timeViewStartAnimation: _timeViewStartAnimation,
                       timeViewEndAnimation: _timeViewEndAnimation,
-                      timeViewAnimationController: _timeViewAnimationController,
-                      verticalScrollPositionAnimation:
-                          _verticalScrollPositionAnimation,
-                      verticalScrollPositionAnimationController:
-                          _verticalScrollPositionAnimationController,
-                      useNewArrangerRenderer: useNewArrangerRenderer,
-                    ),
-                  ),
-                ],
-              ),
+                      arrangementID: project.song.activeArrangementID,
+                    );
+                  }),
+                ),
+              ],
             ),
-          ],
-        ),
+          ),
+          Container(height: 1, color: Theme.panel.border),
+          Expanded(
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                SizedBox(
+                  width: trackHeaderWidth,
+                  child: AnimatedBuilder(
+                    animation: _verticalScrollPositionAnimationController,
+                    builder: (context, child) {
+                      return _TrackHeaders(
+                        verticalScrollPosition:
+                            _verticalScrollPositionAnimation.value,
+                      );
+                    },
+                  ),
+                ),
+                Container(width: 1, color: Theme.panel.border),
+                Expanded(
+                  child: _ArrangerCanvas(
+                    timeViewStartAnimation: _timeViewStartAnimation,
+                    timeViewEndAnimation: _timeViewEndAnimation,
+                    timeViewAnimationController: _timeViewAnimationController,
+                    verticalScrollPositionAnimation:
+                        _verticalScrollPositionAnimation,
+                    verticalScrollPositionAnimationController:
+                        _verticalScrollPositionAnimationController,
+                    useNewArrangerRenderer: useNewArrangerRenderer,
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ],
       ),
     );
   }

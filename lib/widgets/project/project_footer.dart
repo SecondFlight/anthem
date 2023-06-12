@@ -40,10 +40,7 @@ class ProjectFooter extends StatelessWidget {
 
     return Container(
       height: 44,
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(4),
-        color: Theme.panel.main,
-      ),
+      color: Theme.panel.main,
       child: Padding(
         padding: const EdgeInsets.all(6),
         child: Row(

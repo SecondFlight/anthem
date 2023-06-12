@@ -1,5 +1,5 @@
 /*
-  Copyright (C) 2022 - 2023 Joshua Wade
+  Copyright (C) 2022 - 2023 Joshua Wade, Budislav Stepanov
 
   This file is part of Anthem.
 
@@ -18,6 +18,7 @@
 */
 
 import 'dart:math';
+import 'package:anthem/theme.dart';
 import 'package:anthem/widgets/project/project_controller.dart';
 import 'package:provider/provider.dart';
 import 'package:vector_math/vector_math_64.dart';
@@ -70,33 +71,38 @@ class _ButtonTheme {
   });
 }
 
-final _textColors = _ButtonColors(
-  base: const Color(0xFF9DB9CC),
-  hover: const Color(0xFF9DB9CC),
-  press: const Color(0xFF25C29D),
+final _lightTextColors = _ButtonColors(
+  base: const Color(0xFFCFCFCF),
+  hover: const Color(0xFFCFCFCF),
+  press: Theme.control.active,
+);
+final _darkTextColors = _ButtonColors(
+  base: const Color(0xFFB5B5B5),
+  hover: const Color(0xFFB5B5B5),
+  press: Theme.control.active,
 );
 
 final _lightTheme = _ButtonTheme(
   background: _ButtonColors(
-    base: const Color(0xFF4C5A63),
-    hover: const Color(0xFF505F69),
-    press: const Color(0xFF505F69),
+    base: const Color(0xFF666666),
+    hover: const Color(0xFF666666), // TODO
+    press: const Color(0xFF666666), // TODO
   ),
   border: _ButtonColors.all(
-    const Color(0xFF293136),
+    const Color(0xFF2F2F2F),
   ),
-  content: _textColors,
+  content: _lightTextColors,
 );
 final _darkTheme = _ButtonTheme(
   background: _ButtonColors(
-    base: const Color(0xFF414C54),
-    hover: const Color(0xFF455159),
-    press: const Color(0xFF455159),
+    base: const Color(0xFF4A4A4A),
+    hover: const Color(0xFF4A4A4A), // TODO
+    press: const Color(0xFF4A4A4A), // TODO
   ),
   border: _ButtonColors.all(
-    const Color(0xFF293136),
+    const Color(0xFF2F2F2F),
   ),
-  content: _textColors,
+  content: _darkTextColors,
 );
 final _labelTheme = _ButtonTheme(
   background: _ButtonColors(
@@ -109,7 +115,7 @@ final _labelTheme = _ButtonTheme(
     hover: const Color(0xFF293136),
     press: const Color(0xFF293136),
   ),
-  content: _textColors,
+  content: _lightTextColors,
 );
 final _ghostTheme = _ButtonTheme(
   background: _ButtonColors(
@@ -120,7 +126,7 @@ final _ghostTheme = _ButtonTheme(
   border: _ButtonColors.all(
     const Color(0xFF293136),
   ),
-  content: _textColors,
+  content: _lightTextColors,
 );
 
 class Button extends StatefulWidget {

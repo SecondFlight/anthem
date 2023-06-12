@@ -1,5 +1,5 @@
 /*
-  Copyright (C) 2021 - 2022 Joshua Wade, Budislav Stepanov
+  Copyright (C) 2021 - 2023 Joshua Wade, Budislav Stepanov
 
   This file is part of Anthem.
 
@@ -29,15 +29,15 @@ class Theme {
   static _Primary primary = _Primary();
   static _Control control = _Control();
   static _Text text = _Text();
-  static Color separator = const Color(0xFF2B3338);
+  static Color separator = const Color(0xFF666666);
   static _Grid grid = _Grid();
 }
 
 class _Panel {
-  Color main = const Color(0xFF353E45);
-  Color accent = const Color(0xFF3D484F);
-  Color accentDark = const Color(0xFF313A40);
-  Color border = const Color(0xFF293136);
+  Color main = const Color(0xFF4F4F4F);
+  Color accent = const Color(0xFF585858);
+  Color accentDark = const Color(0xFF3F3F3F);
+  Color border = const Color(0xFF232323);
 }
 
 class _Primary {
@@ -48,18 +48,18 @@ class _Primary {
 
 class _Control {
   _ByBackgroundType main = _ByBackgroundType(
-    dark: const Color(0xFF414C54),
-    light: const Color(0xFF4C5A63),
+    dark: const Color(0xFF4A4A4A),
+    light: const Color(0xFF666666),
   );
   _ByBackgroundType hover = _ByBackgroundType(
-    dark: const Color(0xFF4B5861),
-    light: const Color(0xFF505F69),
+    dark: const Color(0xFF666666),
+    light: const Color(0xFF7F7F7F),
   );
   Color active = const Color(0xFF25C29D);
-  Color border = const Color(0xFF293136);
+  Color border = const Color(0xFF2F2F2F);
 }
 
-const _textMain = Color(0xFF9DB9CC);
+const _textMain = Color(0xFFCFCFCF);
 
 class _Text {
   Color main = _textMain;
@@ -75,10 +75,10 @@ class _ByBackgroundType {
 
 // For grid lines in editors
 class _Grid {
-  Color major = const Color(0xFF242A2E);
-  Color minor = const Color(0xFF2B3237);
-  Color accent = const Color(0xFF0F1113);
-  Color backgroundLight = const Color(0xFF394349);
-  Color backgroundDark = const Color(0xFF333D43);
-  Color shaded = const Color(0x11000000);
+  Color major = const Color(0xFF2E2E2E);
+  Color minor = const Color(0xFF373737);
+  Color accent = const Color(0xFF131313);
+  Color backgroundLight = const Color(0xFF494949);
+  Color backgroundDark = const Color(0xFF434343);
+  Color shaded = const Color(0x15000000);
 }

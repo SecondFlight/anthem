@@ -114,75 +114,71 @@ class _ButtonTabsState<T> extends State<ButtonTabs<T>> {
 
         return SizedBox(
           width: rowWidth,
-          child: ClipRRect(
-            borderRadius: BorderRadius.circular(4),
-            child: Stack(
-              fit: StackFit.passthrough,
-              children: <Widget>[
-                    Positioned.fill(
-                      child: Container(
-                        decoration: BoxDecoration(
-                          border: Border.all(color: Theme.panel.border),
-                          borderRadius:
-                              const BorderRadius.all(Radius.circular(4)),
-                        ),
+          child: Stack(
+            fit: StackFit.passthrough,
+            children: <Widget>[
+                  Positioned.fill(
+                    child: Container(
+                      decoration: BoxDecoration(
+                        border: Border.all(color: Theme.panel.border),
+                        borderRadius:
+                            const BorderRadius.all(Radius.circular(4)),
                       ),
                     ),
-                    // It would be nice to have this animation, but it triggers
-                    // on widget resize, whereas it should only happen on
-                    // click. I'm not sure how best to do this and I don't want
-                    // to tackle it now.
-                    // AnimatedPositioned(
-                    //   duration: defaultAnimationDuration,
-                    //   curve: defaultAnimationCurve,
-                    Positioned(
-                      top: 0,
-                      bottom: 0,
-                      left: tabPixelPositions[selectedItemIndex],
-                      right:
-                          rowWidth - tabPixelPositions[selectedItemIndex + 1],
-                      child: Container(
-                        decoration: BoxDecoration(
-                          border: Border.all(color: Theme.panel.border),
-                          borderRadius: BorderRadius.circular(4),
-                          color: Theme.panel.accent,
-                        ),
+                  ),
+                  // It would be nice to have this animation, but it triggers
+                  // on widget resize, whereas it should only happen on
+                  // click. I'm not sure how best to do this and I don't want
+                  // to tackle it now.
+                  // AnimatedPositioned(
+                  //   duration: defaultAnimationDuration,
+                  //   curve: defaultAnimationCurve,
+                  Positioned(
+                    top: 0,
+                    bottom: 0,
+                    left: tabPixelPositions[selectedItemIndex],
+                    right: rowWidth - tabPixelPositions[selectedItemIndex + 1],
+                    child: Container(
+                      decoration: BoxDecoration(
+                        border: Border.all(color: Theme.panel.border),
+                        borderRadius: BorderRadius.circular(4),
+                        color: Theme.panel.accent,
                       ),
                     ),
-                    Positioned.fill(
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
-                        crossAxisAlignment: CrossAxisAlignment.stretch,
-                        children: rowChildren,
-                      ),
+                  ),
+                  Positioned.fill(
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: rowChildren,
                     ),
-                  ] +
-                  List.generate(widget.tabs.length, (index) => index)
-                      .map<Widget>((index) {
-                    final tab = widget.tabs[index];
+                  ),
+                ] +
+                List.generate(widget.tabs.length, (index) => index)
+                    .map<Widget>((index) {
+                  final tab = widget.tabs[index];
 
-                    void onPointerUp(PointerEvent e) {
-                      setState(() {
-                        selectedFallback = tab.id;
-                      });
-                      widget.onChange?.call(tab.id);
-                    }
+                  void onPointerUp(PointerEvent e) {
+                    setState(() {
+                      selectedFallback = tab.id;
+                    });
+                    widget.onChange?.call(tab.id);
+                  }
 
-                    return Positioned(
-                      top: 0,
-                      bottom: 0,
-                      left: tabPixelPositions[index],
-                      right: rowWidth - tabPixelPositions[index + 1],
-                      child: Listener(
-                        onPointerUp: onPointerUp,
-                        onPointerCancel: onPointerUp,
-                        child: const MouseRegion(
-                          cursor: SystemMouseCursors.click,
-                        ),
+                  return Positioned(
+                    top: 0,
+                    bottom: 0,
+                    left: tabPixelPositions[index],
+                    right: rowWidth - tabPixelPositions[index + 1],
+                    child: Listener(
+                      onPointerUp: onPointerUp,
+                      onPointerCancel: onPointerUp,
+                      child: const MouseRegion(
+                        cursor: SystemMouseCursors.click,
                       ),
-                    );
-                  }).toList(),
-            ),
+                    ),
+                  );
+                }).toList(),
           ),
         );
       },
