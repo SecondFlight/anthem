@@ -38,9 +38,13 @@ class ProjectFooter extends StatelessWidget {
     final projectModel = Provider.of<ProjectModel>(context);
     final viewModel = Provider.of<ProjectViewModel>(context);
 
-    return Container(
-      height: 44,
-      color: Theme.panel.main,
+    final separator = Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 8),
+      child: Container(color: const Color(0xFF5E5E5E), height: 24, width: 2),
+    );
+
+    return SizedBox(
+      height: 32,
       child: Padding(
         padding: const EdgeInsets.all(6),
         child: Row(
@@ -49,6 +53,8 @@ class ProjectFooter extends StatelessWidget {
           children: [
             Observer(builder: (context) {
               return ButtonTabs(
+                expandToFit: false,
+                variant: ButtonVariant.label,
                 tabs: [
                   ButtonTabDef.withIcon(icon: Icons.projectPanel, id: false),
                   ButtonTabDef.withIcon(icon: Icons.detailEditor, id: true),
@@ -59,16 +65,11 @@ class ProjectFooter extends StatelessWidget {
                 },
               );
             }),
-            // Button(
-            //   startIcon: Icons.projectPanel,
-            //   toggleState: state.isProjectExplorerVisible,
-            //   onPress: () => projectCubit.setIsProjectExplorerVisible(
-            //     !state.isProjectExplorerVisible,
-            //   ),
-            // ),
-            const SizedBox(width: 8),
+            separator,
             ButtonTabs(
               // selected: ProjectLayoutKind.arrange,
+              expandToFit: false,
+              variant: ButtonVariant.label,
               tabs: [
                 ButtonTabDef.withText(
                   text: 'ARRANGE',
@@ -84,9 +85,10 @@ class ProjectFooter extends StatelessWidget {
                 ),
               ],
             ),
-            const SizedBox(width: 8),
+            separator,
             Observer(builder: (context) {
               return Button(
+                variant: ButtonVariant.label,
                 icon: Icons.patternEditor,
                 width: 32,
                 height: 32,
@@ -98,9 +100,11 @@ class ProjectFooter extends StatelessWidget {
                     : 'Show pattern editor',
               );
             }),
-            const SizedBox(width: 8),
+            separator,
             ButtonTabs(
               // selected: EditorKind.detail,
+              expandToFit: false,
+              variant: ButtonVariant.label,
               tabs: [
                 ButtonTabDef.withIcon(
                   icon: Icons.detailEditor,
@@ -120,13 +124,9 @@ class ProjectFooter extends StatelessWidget {
                 ),
               ],
             ),
-            const Expanded(child: SizedBox()),
+            separator,
             Container(
               width: 304,
-              decoration: BoxDecoration(
-                border: Border.all(color: Theme.panel.border),
-                color: Theme.panel.accentDark,
-              ),
               alignment: Alignment.centerLeft,
               child: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 10),
@@ -142,8 +142,9 @@ class ProjectFooter extends StatelessWidget {
                 }),
               ),
             ),
-            const SizedBox(width: 8),
+            const Expanded(child: SizedBox()),
             Button(
+              variant: ButtonVariant.label,
               icon: Icons.automationMatrixPanel,
               width: 32,
               height: 32,

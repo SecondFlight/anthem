@@ -1,5 +1,5 @@
 /*
-  Copyright (C) 2022 Joshua Wade
+  Copyright (C) 2022 - 2023 Joshua Wade, Budislav Stepanov
 
   This file is part of Anthem.
 
@@ -17,22 +17,28 @@
   along with Anthem. If not, see <https://www.gnu.org/licenses/>.
 */
 
-import 'package:anthem/helpers/measure_text.dart';
 import 'package:anthem/theme.dart';
+import 'package:anthem/widgets/basic/background.dart';
+import 'package:anthem/widgets/basic/button.dart';
 import 'package:flutter/widgets.dart';
+import 'package:provider/provider.dart';
 
 import 'icon.dart';
 
 class ButtonTabs<T> extends StatefulWidget {
+  final bool expandToFit;
   final List<ButtonTabDef<T>> tabs;
   final T? selected;
   final Function(T id)? onChange;
+  final ButtonVariant? variant;
 
   const ButtonTabs({
     Key? key,
     required this.tabs,
     this.selected,
     this.onChange,
+    this.expandToFit = true,
+    this.variant,
   }) : super(key: key);
 
   @override
@@ -46,142 +52,62 @@ class _ButtonTabsState<T> extends State<ButtonTabs<T>> {
   Widget build(BuildContext context) {
     selectedFallback ??= widget.tabs.first.id;
 
-    return LayoutBuilder(
-      builder: (context, constraints) {
-        final List<Widget> rowChildren = [];
-        List<double> tabWidths = [];
+    final rowChildren = <Widget>[];
 
-        for (final tab in widget.tabs) {
-          if (tab.type == ButtonTabType.icon) {
-            tabWidths.add(8 + 16 + 8);
-          } else {
-            const style = TextStyle(fontSize: 11);
-            tabWidths.add(
-              8 +
-                  measureText(
-                    text: tab.text!,
-                    textStyle: style,
-                    context: context,
-                  ).width +
-                  8,
-            );
-          }
-        }
+    final buttonStyle = widget.variant ??
+        (Provider.of<BackgroundType>(context) == BackgroundType.light
+            ? ButtonVariant.light
+            : ButtonVariant.dark);
 
-        var rowWidth = tabWidths.fold<double>(
-            0, (previousValue, element) => previousValue + element);
+    for (final tab in widget.tabs) {
+      var borderRadius = const BorderRadius.all(Radius.zero);
 
-        if (rowWidth < constraints.maxWidth && constraints.maxWidth.isFinite) {
-          final correction = constraints.maxWidth - rowWidth;
-          tabWidths = tabWidths
-              .map((size) => size + correction / tabWidths.length)
-              .toList();
-          rowWidth += correction;
-        }
+      if (tab == widget.tabs.first) {
+        borderRadius = const BorderRadius.horizontal(left: Radius.circular(3));
+      } else if (tab == widget.tabs.last) {
+        borderRadius = const BorderRadius.horizontal(right: Radius.circular(3));
+      }
 
-        for (final tab in widget.tabs) {
-          final isSelected = tab.id == (widget.selected ?? selectedFallback);
-          final color = isSelected ? Theme.primary.main : Theme.text.main;
+      final button = Button(
+        icon: tab.type == ButtonTabType.icon ? tab.icon! : null,
+        text: tab.type == ButtonTabType.text ? tab.text! : null,
+        hideBorder: true,
+        borderRadius: borderRadius,
+        toggleState: tab.id == (widget.selected ?? selectedFallback),
+        expand: widget.expandToFit,
+        variant: buttonStyle,
+        onPress: () {
+          widget.onChange?.call(tab.id);
+          setState(() {
+            selectedFallback = tab.id;
+          });
+        },
+      );
 
-          final Widget content;
-
-          if (tab.type == ButtonTabType.icon) {
-            content = SvgIcon(icon: tab.icon!, color: color);
-            tabWidths.add(8 + 16 + 8);
-          } else {
-            final style = TextStyle(color: color, fontSize: 11);
-            content = Center(child: Text(tab.text!, style: style));
-            tabWidths.add(8 +
-                measureText(text: tab.text!, textStyle: style, context: context)
-                    .width +
-                8);
-          }
-
-          rowChildren.add(content);
-        }
-
-        final selectedItemIndex = widget.tabs.indexWhere(
-            (element) => element.id == (widget.selected ?? selectedFallback!));
-
-        // Includes one more item than the number of tabs
-        final List<double> tabPixelPositions = [0];
-        var accumulator = 0.0;
-
-        for (var i = 0; i < widget.tabs.length; i++) {
-          accumulator += tabWidths[i];
-          tabPixelPositions.add(accumulator);
-        }
-
-        return SizedBox(
-          width: rowWidth,
-          child: Stack(
-            fit: StackFit.passthrough,
-            children: <Widget>[
-                  Positioned.fill(
-                    child: Container(
-                      decoration: BoxDecoration(
-                        border: Border.all(color: Theme.panel.border),
-                        borderRadius:
-                            const BorderRadius.all(Radius.circular(4)),
-                      ),
-                    ),
-                  ),
-                  // It would be nice to have this animation, but it triggers
-                  // on widget resize, whereas it should only happen on
-                  // click. I'm not sure how best to do this and I don't want
-                  // to tackle it now.
-                  // AnimatedPositioned(
-                  //   duration: defaultAnimationDuration,
-                  //   curve: defaultAnimationCurve,
-                  Positioned(
-                    top: 0,
-                    bottom: 0,
-                    left: tabPixelPositions[selectedItemIndex],
-                    right: rowWidth - tabPixelPositions[selectedItemIndex + 1],
-                    child: Container(
-                      decoration: BoxDecoration(
-                        border: Border.all(color: Theme.panel.border),
-                        borderRadius: BorderRadius.circular(4),
-                        color: Theme.panel.accent,
-                      ),
-                    ),
-                  ),
-                  Positioned.fill(
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
-                      crossAxisAlignment: CrossAxisAlignment.stretch,
-                      children: rowChildren,
-                    ),
-                  ),
-                ] +
-                List.generate(widget.tabs.length, (index) => index)
-                    .map<Widget>((index) {
-                  final tab = widget.tabs[index];
-
-                  void onPointerUp(PointerEvent e) {
-                    setState(() {
-                      selectedFallback = tab.id;
-                    });
-                    widget.onChange?.call(tab.id);
-                  }
-
-                  return Positioned(
-                    top: 0,
-                    bottom: 0,
-                    left: tabPixelPositions[index],
-                    right: rowWidth - tabPixelPositions[index + 1],
-                    child: Listener(
-                      onPointerUp: onPointerUp,
-                      onPointerCancel: onPointerUp,
-                      child: const MouseRegion(
-                        cursor: SystemMouseCursors.click,
-                      ),
-                    ),
-                  );
-                }).toList(),
-          ),
+      rowChildren.add(
+        widget.expandToFit
+            ? Flexible(
+                flex: 1,
+                child: button,
+              )
+            : button,
+      );
+      if (tab != widget.tabs.last) {
+        rowChildren.add(
+          Container(width: 1, color: Theme.panel.border),
         );
-      },
+      }
+    }
+
+    return Container(
+      decoration: BoxDecoration(
+        border: Border.all(color: Theme.panel.border),
+        borderRadius: const BorderRadius.all(Radius.circular(3)),
+      ),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: rowChildren,
+      ),
     );
   }
 }

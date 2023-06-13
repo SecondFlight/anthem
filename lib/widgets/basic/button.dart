@@ -321,7 +321,7 @@ class _ButtonState extends State<Button> {
           child: ClipRRect(
             borderRadius: BorderRadius.circular(1),
             child: Stack(
-              fit: widget.expand != null
+              fit: widget.expand == true
                   ? StackFit.expand
                   : StackFit.passthrough,
               children: stackChildren,
