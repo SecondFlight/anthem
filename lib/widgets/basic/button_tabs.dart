@@ -17,9 +17,9 @@
   along with Anthem. If not, see <https://www.gnu.org/licenses/>.
 */
 
-import 'package:anthem/theme.dart';
 import 'package:anthem/widgets/basic/background.dart';
 import 'package:anthem/widgets/basic/button.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
@@ -31,6 +31,7 @@ class ButtonTabs<T> extends StatefulWidget {
   final T? selected;
   final Function(T id)? onChange;
   final ButtonVariant? variant;
+  final int spaceBetween;
 
   const ButtonTabs({
     Key? key,
@@ -39,6 +40,7 @@ class ButtonTabs<T> extends StatefulWidget {
     this.onChange,
     this.expandToFit = true,
     this.variant,
+    this.spaceBetween = 0,
   }) : super(key: key);
 
   @override
@@ -54,10 +56,31 @@ class _ButtonTabsState<T> extends State<ButtonTabs<T>> {
 
     final rowChildren = <Widget>[];
 
+    final backgroundType = Provider.of<BackgroundType>(context);
+
     final buttonStyle = widget.variant ??
-        (Provider.of<BackgroundType>(context) == BackgroundType.light
+        (backgroundType == BackgroundType.light
             ? ButtonVariant.light
             : ButtonVariant.dark);
+
+    final AnthemButtonTheme buttonTheme;
+
+    switch (buttonStyle) {
+      case ButtonVariant.light:
+        buttonTheme = buttonLightTheme;
+        break;
+      case ButtonVariant.dark:
+        buttonTheme = buttonDarkTheme;
+        break;
+      case ButtonVariant.ghost:
+        buttonTheme = buttonGhostTheme;
+        break;
+      case ButtonVariant.label:
+        buttonTheme = buttonLabelTheme;
+        break;
+    }
+
+    final borderColor = buttonTheme.border.base;
 
     for (final tab in widget.tabs) {
       var borderRadius = const BorderRadius.all(Radius.zero);
@@ -93,15 +116,28 @@ class _ButtonTabsState<T> extends State<ButtonTabs<T>> {
             : button,
       );
       if (tab != widget.tabs.last) {
+        if (widget.spaceBetween > 0) {
+          rowChildren.add(
+            SizedBox(width: widget.spaceBetween / 2),
+          );
+        }
         rowChildren.add(
-          Container(width: 1, color: Theme.panel.border),
+          Container(
+            width: 1,
+            color: borderColor,
+          ),
         );
+        if (widget.spaceBetween > 0) {
+          rowChildren.add(
+            SizedBox(width: widget.spaceBetween / 2),
+          );
+        }
       }
     }
 
     return Container(
       decoration: BoxDecoration(
-        border: Border.all(color: Theme.panel.border),
+        border: Border.all(color: borderColor),
         borderRadius: const BorderRadius.all(Radius.circular(3)),
       ),
       child: Row(

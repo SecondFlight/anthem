@@ -35,18 +35,18 @@ enum ButtonVariant {
   ghost,
 }
 
-class _ButtonColors {
+class ButtonColors {
   late Color base;
   late Color hover;
   late Color press;
 
-  _ButtonColors({
+  ButtonColors({
     required this.base,
     required this.hover,
     required this.press,
   });
 
-  _ButtonColors.all(Color color) {
+  ButtonColors.all(Color color) {
     base = color;
     hover = color;
     press = color;
@@ -59,74 +59,74 @@ class _ButtonColors {
   }
 }
 
-class _ButtonTheme {
-  final _ButtonColors background;
-  final _ButtonColors border;
-  final _ButtonColors content;
+class AnthemButtonTheme {
+  final ButtonColors background;
+  final ButtonColors border;
+  final ButtonColors content;
 
-  const _ButtonTheme({
+  const AnthemButtonTheme({
     required this.background,
     required this.border,
     required this.content,
   });
 }
 
-final _lightTextColors = _ButtonColors(
+final buttonLightTextColors = ButtonColors(
   base: const Color(0xFFCFCFCF),
   hover: const Color(0xFFCFCFCF),
   press: Theme.control.active,
 );
-final _darkTextColors = _ButtonColors(
+final buttonDarkTextColors = ButtonColors(
   base: const Color(0xFFB5B5B5),
   hover: const Color(0xFFB5B5B5),
   press: Theme.control.active,
 );
 
-final _lightTheme = _ButtonTheme(
-  background: _ButtonColors(
+final buttonLightTheme = AnthemButtonTheme(
+  background: ButtonColors(
     base: const Color(0xFF666666),
     hover: const Color(0xFF666666), // TODO
     press: const Color(0xFF666666), // TODO
   ),
-  border: _ButtonColors.all(
+  border: ButtonColors.all(
     const Color(0xFF2F2F2F),
   ),
-  content: _lightTextColors,
+  content: buttonLightTextColors,
 );
-final _darkTheme = _ButtonTheme(
-  background: _ButtonColors(
+final buttonDarkTheme = AnthemButtonTheme(
+  background: ButtonColors(
     base: const Color(0xFF4A4A4A),
     hover: const Color(0xFF4A4A4A), // TODO
     press: const Color(0xFF4A4A4A), // TODO
   ),
-  border: _ButtonColors.all(
+  border: ButtonColors.all(
     const Color(0xFF2F2F2F),
   ),
-  content: _darkTextColors,
+  content: buttonDarkTextColors,
 );
-final _labelTheme = _ButtonTheme(
-  background: _ButtonColors(
+final buttonLabelTheme = AnthemButtonTheme(
+  background: ButtonColors(
     base: const Color(0x00000000),
     hover: const Color(0x00000000),
     press: const Color(0x00000000),
   ),
-  border: _ButtonColors(
+  border: ButtonColors(
     base: const Color(0x00000000),
     hover: const Color(0xFF293136),
     press: const Color(0xFF293136),
   ),
-  content: _lightTextColors,
+  content: buttonLightTextColors,
 );
-final _ghostTheme = _ButtonTheme(
-  background: _ButtonColors(
+final buttonGhostTheme = AnthemButtonTheme(
+  background: ButtonColors(
     base: const Color(0x00000000),
     hover: const Color(0xFF3C484F),
     press: const Color(0xFF3C484F),
   ),
-  border: _ButtonColors.all(
+  border: ButtonColors.all(
     const Color(0xFF293136),
   ),
-  content: _lightTextColors,
+  content: buttonLightTextColors,
 );
 
 class Button extends StatefulWidget {
@@ -197,7 +197,7 @@ class _ButtonState extends State<Button> {
 
   @override
   Widget build(BuildContext context) {
-    _ButtonTheme theme;
+    AnthemButtonTheme theme;
 
     final backgroundType = Provider.of<BackgroundType>(context);
 
@@ -208,16 +208,16 @@ class _ButtonState extends State<Button> {
 
     switch (variant) {
       case ButtonVariant.light:
-        theme = _lightTheme;
+        theme = buttonLightTheme;
         break;
       case ButtonVariant.dark:
-        theme = _darkTheme;
+        theme = buttonDarkTheme;
         break;
       case ButtonVariant.label:
-        theme = _labelTheme;
+        theme = buttonLabelTheme;
         break;
       case ButtonVariant.ghost:
-        theme = _ghostTheme;
+        theme = buttonGhostTheme;
         break;
     }
 

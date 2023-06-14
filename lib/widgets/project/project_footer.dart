@@ -39,7 +39,7 @@ class ProjectFooter extends StatelessWidget {
     final viewModel = Provider.of<ProjectViewModel>(context);
 
     final separator = Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 8),
+      padding: const EdgeInsets.symmetric(horizontal: 11),
       child: Container(color: const Color(0xFF5E5E5E), height: 24, width: 2),
     );
 
@@ -68,6 +68,7 @@ class ProjectFooter extends StatelessWidget {
             separator,
             ButtonTabs(
               // selected: ProjectLayoutKind.arrange,
+              spaceBetween: 8,
               expandToFit: false,
               variant: ButtonVariant.label,
               tabs: [
@@ -89,9 +90,8 @@ class ProjectFooter extends StatelessWidget {
             Observer(builder: (context) {
               return Button(
                 variant: ButtonVariant.label,
+                hideBorder: true,
                 icon: Icons.patternEditor,
-                width: 32,
-                height: 32,
                 toggleState: projectModel.isPatternEditorVisible,
                 onPress: () => projectModel.isPatternEditorVisible =
                     !projectModel.isPatternEditorVisible,
