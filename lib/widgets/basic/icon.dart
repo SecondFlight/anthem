@@ -93,9 +93,137 @@ class SvgIcon extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    if (icon == Icons.mixer) {
+      return SizedBox(
+        width: 16,
+        height: 16,
+        child: CustomPaint(
+          painter: _MixerIconPainter(color: color),
+        ),
+      );
+    } else if (icon == Icons.channelRack) {
+      return SizedBox(
+        width: 16,
+        height: 16,
+        child: CustomPaint(
+          painter: _ChannelRackIconPainter(color: color),
+        ),
+      );
+    }
+
     return SvgPicture.asset(
       icon.path,
       colorFilter: ColorFilter.mode(color, BlendMode.srcIn),
     );
   }
+}
+
+// Some icons don't draw correctly. I'm not sure why this is. This issue affects
+// a small minority of icons, so I've opted to hard-code a few icons with custom
+// painters.
+
+class _MixerIconPainter extends CustomPainter {
+  final Color color;
+
+  _MixerIconPainter({required this.color});
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    final paint = Paint()..color = color;
+    final strokePaint = Paint()
+      ..color = color
+      ..style = PaintingStyle.stroke
+      ..strokeWidth = 1;
+
+    // First vertical line
+    canvas.drawRect(
+      const Rect.fromLTWH(3, 2, 1, 3),
+      paint,
+    );
+    canvas.drawRect(
+      const Rect.fromLTWH(3, 6, 1, 8),
+      paint,
+    );
+
+    // Second vertical line
+    canvas.drawRect(
+      const Rect.fromLTWH(8, 2, 1, 8),
+      paint,
+    );
+    canvas.drawRect(
+      const Rect.fromLTWH(8, 11, 1, 3),
+      paint,
+    );
+
+    // Third vertical line
+    canvas.drawRect(
+      const Rect.fromLTWH(13, 2, 1, 3),
+      paint,
+    );
+    canvas.drawRect(
+      const Rect.fromLTWH(13, 6, 1, 8),
+      paint,
+    );
+
+    // Handles
+    canvas.save();
+    canvas.clipRect(const Rect.fromLTWH(2, 4, 3, 3));
+    canvas.drawCircle(const Offset(3.5, 5.5), 1.01, strokePaint);
+    canvas.restore();
+
+    canvas.save();
+    canvas.clipRect(const Rect.fromLTWH(7, 9, 3, 3));
+    canvas.drawCircle(const Offset(8.5, 10.5), 1.01, strokePaint);
+    canvas.restore();
+
+    canvas.save();
+    canvas.clipRect(const Rect.fromLTWH(12, 4, 3, 3));
+    canvas.drawCircle(const Offset(13.5, 5.5), 1.01, strokePaint);
+    canvas.restore();
+  }
+
+  @override
+  bool shouldRepaint(_MixerIconPainter oldDelegate) =>
+      oldDelegate.color != color;
+
+  @override
+  bool shouldRebuildSemantics(_MixerIconPainter oldDelegate) => false;
+}
+
+class _ChannelRackIconPainter extends CustomPainter {
+  final Color color;
+
+  _ChannelRackIconPainter({required this.color});
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    final paint = Paint()..color = color;
+    final strokePaint = Paint()
+      ..color = color
+      ..style = PaintingStyle.stroke
+      ..strokeWidth = 1;
+
+    canvas.drawRRect(
+      RRect.fromRectAndRadius(
+        const Rect.fromLTWH(2.5, 2.5, 11, 11),
+        const Radius.circular(1),
+      ),
+      strokePaint,
+    );
+    canvas.drawRect(
+      const Rect.fromLTWH(5, 7, 2, 2),
+      paint,
+    );
+    canvas.drawRect(
+      const Rect.fromLTWH(9, 7, 2, 2),
+      paint,
+    );
+  }
+
+  @override
+  bool shouldRepaint(_ChannelRackIconPainter oldDelegate) =>
+      oldDelegate.color != color;
+
+  @override
+  bool shouldRebuildSemantics(_ChannelRackIconPainter oldDelegate) => false;
 }
