@@ -553,7 +553,11 @@ class _ArrangerCanvas extends StatelessWidget {
     final viewModel = Provider.of<ArrangerViewModel>(context);
 
     return _ArrangerCanvasCursor(
-      child: ClipRect(
+      child: Container(
+        clipBehavior: Clip.hardEdge,
+        decoration: BoxDecoration(
+          color: Theme.grid.backgroundLight,
+        ),
         child: LayoutBuilder(
           builder: (context, constraints) {
             final grid = Positioned.fill(
