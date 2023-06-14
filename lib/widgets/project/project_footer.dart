@@ -154,8 +154,6 @@ class ProjectFooter extends StatelessWidget {
             Button(
               variant: ButtonVariant.label,
               icon: Icons.automationMatrixPanel,
-              width: 32,
-              height: 32,
             ),
           ],
         ),
