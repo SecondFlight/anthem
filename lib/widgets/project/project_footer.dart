@@ -66,25 +66,33 @@ class ProjectFooter extends StatelessWidget {
               );
             }),
             separator,
-            ButtonTabs(
-              // selected: ProjectLayoutKind.arrange,
-              spaceBetween: 8,
-              expandToFit: false,
-              variant: ButtonVariant.label,
-              tabs: [
-                ButtonTabDef.withText(
-                  text: 'ARRANGE',
-                  id: ProjectLayoutKind.arrange,
-                ),
-                ButtonTabDef.withText(
-                  text: 'EDIT',
-                  id: ProjectLayoutKind.edit,
-                ),
-                ButtonTabDef.withText(
-                  text: 'MIX',
-                  id: ProjectLayoutKind.mix,
-                ),
-              ],
+            // This widget aligns the text. The text is centered "correctly"
+            // without it, except that the text here is all-caps and so doesn't
+            // have any content below the baseline. This adjustment means the
+            // text is centered properly when taking the lack of baseline into
+            // account.
+            Padding(
+              padding: const EdgeInsets.only(top: 1),
+              child: ButtonTabs(
+                // selected: ProjectLayoutKind.arrange,
+                spaceBetween: 8,
+                expandToFit: false,
+                variant: ButtonVariant.label,
+                tabs: [
+                  ButtonTabDef.withText(
+                    text: 'ARRANGE',
+                    id: ProjectLayoutKind.arrange,
+                  ),
+                  ButtonTabDef.withText(
+                    text: 'EDIT',
+                    id: ProjectLayoutKind.edit,
+                  ),
+                  ButtonTabDef.withText(
+                    text: 'MIX',
+                    id: ProjectLayoutKind.mix,
+                  ),
+                ],
+              ),
             ),
             separator,
             Observer(builder: (context) {
