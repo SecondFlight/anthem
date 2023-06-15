@@ -18,18 +18,21 @@
 */
 
 import 'package:flutter/widgets.dart';
-import 'package:flutter_mobx/flutter_mobx.dart';
 
-class ControlledScrollbarOverlay extends StatefulObserverWidget {
+class ControlledScrollbarOverlay extends StatefulWidget {
   final Widget? child;
-  final double start;
-  final double end;
+  final double handleStart;
+  final double handleEnd;
+  final double scrollRegionStart;
+  final double scrollRegionEnd;
 
   const ControlledScrollbarOverlay({
     Key? key,
     this.child,
-    this.start = 0,
-    this.end = 1,
+    this.handleStart = 0,
+    this.handleEnd = 1,
+    this.scrollRegionStart = 0,
+    this.scrollRegionEnd = 1,
   }) : super(key: key);
 
   @override
@@ -45,6 +48,13 @@ class _ControlledScrollbarOverlayState
   @override
   Widget build(BuildContext context) {
     return LayoutBuilder(builder: (context, layout) {
+      final scrollRegionSize =
+          widget.scrollRegionEnd - widget.scrollRegionStart;
+      final normalizedHandleStart =
+          (widget.handleStart - widget.scrollRegionStart) / scrollRegionSize;
+      final normalizedHandleEnd =
+          (widget.handleEnd - widget.scrollRegionStart) / scrollRegionSize;
+
       return MouseRegion(
         onEnter: (e) {
           setState(() {
@@ -61,8 +71,8 @@ class _ControlledScrollbarOverlayState
             if (widget.child != null) Positioned.fill(child: widget.child!),
             Positioned(
               right: 0,
-              top: layout.maxHeight * widget.start,
-              bottom: layout.maxHeight * (1 - widget.end),
+              top: layout.maxHeight * normalizedHandleStart,
+              bottom: layout.maxHeight * (1 - normalizedHandleEnd),
               child: Padding(
                 padding: const EdgeInsets.only(top: 1, right: 1, bottom: 1),
                 child: SizedBox(

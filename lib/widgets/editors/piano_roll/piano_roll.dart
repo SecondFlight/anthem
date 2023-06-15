@@ -411,24 +411,30 @@ class _PianoRollContentState extends State<_PianoRollContent>
     );
 
     final noteRenderArea = Expanded(
-      child: ControlledScrollbarOverlay(
-        child: LayoutBuilder(builder: (context, constraints) {
-          _pianoRollCanvasSize = constraints.biggest;
-          return PianoRollEventListener(
-            child: _PianoRollCanvasCursor(
-              child: ClipRect(
-                child: Stack(
-                  fit: StackFit.expand,
-                  children: [
-                    PianoRollGrid(
-                      timeViewAnimationController: _timeViewAnimationController,
-                      timeViewStartAnimation: _timeViewStartAnimation,
-                      timeViewEndAnimation: _timeViewEndAnimation,
-                      keyValueAtTopAnimationController:
-                          _keyValueAtTopAnimationController,
-                      keyValueAtTopAnimation: _keyValueAtTopAnimation,
-                    ),
-                    AnimatedBuilder(
+      child: LayoutBuilder(builder: (context, constraints) {
+        _pianoRollCanvasSize = constraints.biggest;
+        return PianoRollEventListener(
+          child: _PianoRollCanvasCursor(
+            child: ClipRect(
+              child: Stack(
+                fit: StackFit.expand,
+                children: [
+                  PianoRollGrid(
+                    timeViewAnimationController: _timeViewAnimationController,
+                    timeViewStartAnimation: _timeViewStartAnimation,
+                    timeViewEndAnimation: _timeViewEndAnimation,
+                    keyValueAtTopAnimationController:
+                        _keyValueAtTopAnimationController,
+                    keyValueAtTopAnimation: _keyValueAtTopAnimation,
+                  ),
+                  ControlledScrollbarOverlay(
+                    scrollRegionStart: minKeyValue,
+                    scrollRegionEnd: maxKeyValue,
+                    handleStart: maxKeyValue - viewModel.keyValueAtTop,
+                    handleEnd: maxKeyValue -
+                        viewModel.keyValueAtTop +
+                        constraints.maxHeight / viewModel.keyHeight,
+                    child: AnimatedBuilder(
                       animation: _keyValueAtTopAnimationController,
                       builder: (context, child) {
                         return AnimatedBuilder(
@@ -443,69 +449,67 @@ class _PianoRollContentState extends State<_PianoRollContent>
                         );
                       },
                     ),
-                    Observer(
-                      builder: (context) {
-                        if (viewModel.selectionBox == null) {
-                          return const SizedBox();
-                        }
+                  ),
+                  Observer(
+                    builder: (context) {
+                      if (viewModel.selectionBox == null) {
+                        return const SizedBox();
+                      }
 
-                        final selectionBox = viewModel.selectionBox!;
+                      final selectionBox = viewModel.selectionBox!;
 
-                        final left = timeToPixels(
-                          timeViewStart: viewModel.timeView.start,
-                          timeViewEnd: viewModel.timeView.end,
-                          viewPixelWidth: constraints.maxWidth,
-                          time: selectionBox.left,
-                        );
+                      final left = timeToPixels(
+                        timeViewStart: viewModel.timeView.start,
+                        timeViewEnd: viewModel.timeView.end,
+                        viewPixelWidth: constraints.maxWidth,
+                        time: selectionBox.left,
+                      );
 
-                        final width = timeToPixels(
-                          timeViewStart: viewModel.timeView.start,
-                          timeViewEnd: viewModel.timeView.end,
-                          viewPixelWidth: constraints.maxWidth,
-                          time: viewModel.timeView.start + selectionBox.width,
-                        );
+                      final width = timeToPixels(
+                        timeViewStart: viewModel.timeView.start,
+                        timeViewEnd: viewModel.timeView.end,
+                        viewPixelWidth: constraints.maxWidth,
+                        time: viewModel.timeView.start + selectionBox.width,
+                      );
 
-                        final top = keyValueToPixels(
-                          keyValueAtTop: viewModel.keyValueAtTop,
-                          keyHeight: viewModel.keyHeight,
-                          keyValue: selectionBox.bottom,
-                        );
+                      final top = keyValueToPixels(
+                        keyValueAtTop: viewModel.keyValueAtTop,
+                        keyHeight: viewModel.keyHeight,
+                        keyValue: selectionBox.bottom,
+                      );
 
-                        final height = keyValueToPixels(
-                          keyValueAtTop: viewModel.keyValueAtTop,
-                          keyHeight: viewModel.keyHeight,
-                          keyValue:
-                              viewModel.keyValueAtTop - selectionBox.height,
-                        );
+                      final height = keyValueToPixels(
+                        keyValueAtTop: viewModel.keyValueAtTop,
+                        keyHeight: viewModel.keyHeight,
+                        keyValue: viewModel.keyValueAtTop - selectionBox.height,
+                      );
 
-                        final borderColor =
-                            const HSLColor.fromAHSL(1, 166, 0.6, 0.35)
-                                .toColor();
-                        final backgroundColor = borderColor.withAlpha(100);
+                      final borderColor =
+                          const HSLColor.fromAHSL(1, 166, 0.6, 0.35).toColor();
+                      final backgroundColor = borderColor.withAlpha(100);
 
-                        return Positioned(
-                          left: left,
-                          top: top,
-                          child: Container(
-                            width: width,
-                            height: height,
-                            decoration: BoxDecoration(
-                              color: backgroundColor,
-                              border: Border.all(color: borderColor),
-                              borderRadius:
-                                  const BorderRadius.all(Radius.circular(2)),
-                            ),
+                      return Positioned(
+                        left: left,
+                        top: top,
+                        child: Container(
+                          width: width,
+                          height: height,
+                          decoration: BoxDecoration(
+                            color: backgroundColor,
+                            border: Border.all(color: borderColor),
+                            borderRadius:
+                                const BorderRadius.all(Radius.circular(2)),
                           ),
-                        );
-                      },
-                    ),
-                  ],
-                ),
+                        ),
+                      );
+                    },
+                  ),
+                ],
               ),
             ),
-          );
-        }),
-      ),
+          ),
+        );
+      }),
     );
 
     final controller = Provider.of<PianoRollController>(context);
