@@ -31,13 +31,14 @@ class Theme {
   static _Text text = _Text();
   static Color separator = const Color(0xFF666666);
   static _Grid grid = _Grid();
+  static Color background = const Color(0xFF232323);
 }
 
 class _Panel {
   Color main = const Color(0xFF4F4F4F);
-  Color accent = const Color(0xFF585858);
+  Color accentLight = const Color(0xFF585858);
   Color accentDark = const Color(0xFF3F3F3F);
-  Color border = const Color(0xFF232323);
+  Color border = const Color(0xFF2F2F2F);
 }
 
 class _Primary {

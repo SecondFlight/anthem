@@ -64,112 +64,101 @@ class _PianoRollAttributeEditorState extends State<PianoRollAttributeEditor> {
     final project = Provider.of<ProjectModel>(context);
     final viewModel = Provider.of<PianoRollViewModel>(context);
 
-    return Row(
-      children: [
-        Expanded(
-          child: Container(
-            decoration: BoxDecoration(
-              border: Border.all(color: Theme.panel.border),
-              borderRadius: const BorderRadius.all(Radius.circular(4)),
-            ),
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                SizedBox(
-                  width: pianoControlWidth,
-                  child: Padding(
-                    padding: const EdgeInsets.only(left: 4, top: 4, right: 4),
-                    child: Align(
-                      alignment: Alignment.topCenter,
-                      child: SizedBox(
-                        height: 20,
-                        child: Observer(builder: (context) {
-                          return Dropdown(
-                            allowNoSelection: false,
-                            items: [
-                              DropdownItem(
-                                id: ActiveNoteAttribute.velocity.name,
-                                name: 'Velocity',
-                              ),
-                              DropdownItem(
-                                id: ActiveNoteAttribute.pan.name,
-                                name: 'Pan',
-                              ),
-                            ],
-                            selectedID: viewModel.activeNoteAttribute.name,
-                            onChanged: (id) {
-                              viewModel.activeNoteAttribute =
-                                  ActiveNoteAttribute.values.firstWhere(
-                                (attribute) => attribute.name == id,
-                              );
-                            },
-                          );
-                        }),
-                      ),
-                    ),
-                  ),
-                ),
-                Container(width: 1, color: Theme.panel.border),
-                Expanded(
-                  child: LayoutBuilder(builder: (context, constraints) {
-                    AttributeEditorPointerEvent createEditorPointerEvent(
-                        PointerEvent rawEvent) {
-                      return AttributeEditorPointerEvent(
-                        offset: pixelsToTime(
-                          timeViewStart: viewModel.timeView.start,
-                          timeViewEnd: viewModel.timeView.end,
-                          viewPixelWidth: constraints.maxWidth,
-                          pixelOffsetFromLeft: rawEvent.localPosition.dx,
+    return Container(
+      decoration: BoxDecoration(
+        border: Border(
+          top: BorderSide(color: Theme.panel.border),
+        ),
+      ),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          SizedBox(
+            width: pianoControlWidth,
+            child: Padding(
+              padding: const EdgeInsets.only(left: 4, top: 4, right: 4),
+              child: Align(
+                alignment: Alignment.topCenter,
+                child: SizedBox(
+                  height: 20,
+                  child: Observer(builder: (context) {
+                    return Dropdown(
+                      allowNoSelection: false,
+                      items: [
+                        DropdownItem(
+                          id: ActiveNoteAttribute.velocity.name,
+                          name: 'Velocity',
                         ),
-                        normalizedY: (1 -
-                                (rawEvent.localPosition.dy /
-                                    constraints.maxHeight))
-                            .clamp(0, 1),
-                        viewSize: constraints.biggest,
-                      );
-                    }
-
-                    return Listener(
-                      onPointerDown: (e) {
-                        controller.pointerDown(createEditorPointerEvent(e));
+                        DropdownItem(
+                          id: ActiveNoteAttribute.pan.name,
+                          name: 'Pan',
+                        ),
+                      ],
+                      selectedID: viewModel.activeNoteAttribute.name,
+                      onChanged: (id) {
+                        viewModel.activeNoteAttribute =
+                            ActiveNoteAttribute.values.firstWhere(
+                          (attribute) => attribute.name == id,
+                        );
                       },
-                      onPointerMove: (e) {
-                        controller.pointerMove(createEditorPointerEvent(e));
-                      },
-                      onPointerUp: (e) {
-                        controller.pointerUp(createEditorPointerEvent(e));
-                      },
-                      onPointerCancel: (e) {
-                        controller.pointerUp(createEditorPointerEvent(e));
-                      },
-                      child: AnimatedBuilder(
-                        animation: widget.timeViewAnimationController,
-                        builder: (context, child) {
-                          return ClipRect(
-                            child: CustomPaintObserver(
-                              painterBuilder: () => PianoRollAttributePainter(
-                                viewModel: viewModel,
-                                project: project,
-                                timeViewStart:
-                                    widget.timeViewStartAnimation.value,
-                                timeViewEnd: widget.timeViewEndAnimation.value,
-                              ),
-                            ),
-                          );
-                        },
-                      ),
                     );
                   }),
                 ),
-              ],
+              ),
             ),
           ),
-        ),
-        const SizedBox(width: 4),
-        const SizedBox(
-          width: 17,
-        ),
-      ],
+          Container(width: 1, color: Theme.panel.border),
+          Expanded(
+            child: LayoutBuilder(builder: (context, constraints) {
+              AttributeEditorPointerEvent createEditorPointerEvent(
+                  PointerEvent rawEvent) {
+                return AttributeEditorPointerEvent(
+                  offset: pixelsToTime(
+                    timeViewStart: viewModel.timeView.start,
+                    timeViewEnd: viewModel.timeView.end,
+                    viewPixelWidth: constraints.maxWidth,
+                    pixelOffsetFromLeft: rawEvent.localPosition.dx,
+                  ),
+                  normalizedY:
+                      (1 - (rawEvent.localPosition.dy / constraints.maxHeight))
+                          .clamp(0, 1),
+                  viewSize: constraints.biggest,
+                );
+              }
+
+              return Listener(
+                onPointerDown: (e) {
+                  controller.pointerDown(createEditorPointerEvent(e));
+                },
+                onPointerMove: (e) {
+                  controller.pointerMove(createEditorPointerEvent(e));
+                },
+                onPointerUp: (e) {
+                  controller.pointerUp(createEditorPointerEvent(e));
+                },
+                onPointerCancel: (e) {
+                  controller.pointerUp(createEditorPointerEvent(e));
+                },
+                child: AnimatedBuilder(
+                  animation: widget.timeViewAnimationController,
+                  builder: (context, child) {
+                    return ClipRect(
+                      child: CustomPaintObserver(
+                        painterBuilder: () => PianoRollAttributePainter(
+                          viewModel: viewModel,
+                          project: project,
+                          timeViewStart: widget.timeViewStartAnimation.value,
+                          timeViewEnd: widget.timeViewEndAnimation.value,
+                        ),
+                      ),
+                    );
+                  },
+                ),
+              );
+            }),
+          ),
+        ],
+      ),
     );
   }
 }

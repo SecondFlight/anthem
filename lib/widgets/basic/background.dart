@@ -1,5 +1,5 @@
 /*
-  Copyright (C) 2021 Joshua Wade
+  Copyright (C) 2021, 2023 Joshua Wade
 
   This file is part of Anthem.
 
@@ -17,12 +17,11 @@
   along with Anthem. If not, see <https://www.gnu.org/licenses/>.
 */
 
+import 'package:anthem/theme.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
-import '../../theme.dart';
-
-enum BackgroundType { dark, light }
+enum BackgroundType { main, dark, light }
 
 // Renders a container with the specified background type, and supplies that
 // type to children via a provider.
@@ -48,8 +47,10 @@ class Background extends StatelessWidget {
       child: Container(
         decoration: BoxDecoration(
           color: type == BackgroundType.dark
-              ? Theme.panel.main
-              : Theme.panel.accent,
+              ? Theme.panel.accentDark
+              : type == BackgroundType.light
+                  ? Theme.panel.accentLight
+                  : Theme.panel.main,
           border: border,
           borderRadius: borderRadius,
         ),

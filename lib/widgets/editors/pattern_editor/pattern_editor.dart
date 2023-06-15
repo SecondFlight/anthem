@@ -76,143 +76,149 @@ class _PatternEditorState extends State<PatternEditor> {
         child: SizeChangedLayoutNotifier(
           child: Container(
             color: Theme.panel.main,
-            child: Padding(
-              padding: const EdgeInsets.all(6.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  Row(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Menu(
-                        menuController: menuController,
-                        menuDef: MenuDef(
-                          children: [
-                            AnthemMenuItem(
-                              text: 'New pattern',
-                              hint: 'Create a new pattern',
-                              onSelected: () {
-                                projectController.addPattern();
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                SizedBox(
+                  height: 38,
+                  child: Background(
+                    type: BackgroundType.dark,
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 6),
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Menu(
+                            menuController: menuController,
+                            menuDef: MenuDef(
+                              children: [
+                                AnthemMenuItem(
+                                  text: 'New pattern',
+                                  hint: 'Create a new pattern',
+                                  onSelected: () {
+                                    projectController.addPattern();
+                                  },
+                                )
+                              ],
+                            ),
+                            child: Button(
+                              width: 26,
+                              height: 26,
+                              icon: Icons.kebab,
+                              onPress: () {
+                                menuController.open?.call();
                               },
-                            )
-                          ],
-                        ),
-                        child: Button(
-                          width: 26,
-                          height: 26,
-                          icon: Icons.kebab,
-                          onPress: () {
-                            menuController.open?.call();
-                          },
-                        ),
+                            ),
+                          ),
+                          const SizedBox(width: 4),
+                          Observer(builder: (context) {
+                            return Dropdown(
+                              width: 169,
+                              height: 26,
+                              hint: 'Change the active pattern',
+                              items: project.song.patternOrder.map(
+                                (id) {
+                                  final pattern = project.song.patterns[id]!;
+                                  return DropdownItem(
+                                    id: id,
+                                    name: pattern.name,
+                                    hint: pattern.name,
+                                  );
+                                },
+                              ).toList(),
+                              selectedID:
+                                  project.song.activePatternID?.toString(),
+                              onChanged: (id) {
+                                project.song.activePatternID = id;
+                              },
+                            );
+                          }),
+                          const Expanded(child: SizedBox()),
+                        ],
                       ),
-                      const SizedBox(width: 4),
-                      Observer(builder: (context) {
-                        return Dropdown(
-                          width: 169,
-                          height: 26,
-                          hint: 'Change the active pattern',
-                          items: project.song.patternOrder.map(
-                            (id) {
-                              final pattern = project.song.patterns[id]!;
-                              return DropdownItem(
-                                id: id,
-                                name: pattern.name,
-                                hint: pattern.name,
-                              );
-                            },
-                          ).toList(),
-                          selectedID: project.song.activePatternID?.toString(),
-                          onChanged: (id) {
-                            project.song.activePatternID = id;
-                          },
-                        );
-                      }),
-                      const Expanded(child: SizedBox()),
-                    ],
+                    ),
                   ),
-                  const SizedBox(height: 4),
-                  Expanded(
-                    child: Row(
-                      crossAxisAlignment: CrossAxisAlignment.stretch,
-                      children: [
-                        Expanded(
-                          child: Background(
-                            type: BackgroundType.light,
-                            border: Border.all(color: Theme.panel.border),
-                            borderRadius:
-                                const BorderRadius.all(Radius.circular(2)),
-                            child: SingleChildScrollView(
-                              controller: verticalScrollController,
-                              child: Padding(
-                                padding:
-                                    const EdgeInsets.symmetric(vertical: 5),
-                                child: SizeChangedLayoutNotifier(
-                                  child: Observer(builder: (context) {
-                                    return Column(
-                                      children: project.generatorList
-                                          .map<Widget>((id) {
-                                        return Padding(
-                                          padding:
-                                              const EdgeInsets.only(bottom: 1),
-                                          child: GeneratorRow(generatorID: id),
-                                        );
-                                      }).toList(),
-                                    );
-                                  }),
-                                ),
+                ),
+                const SizedBox(height: 4),
+                Expanded(
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      Expanded(
+                        child: Background(
+                          type: BackgroundType.light,
+                          border: Border.all(color: Theme.panel.border),
+                          borderRadius:
+                              const BorderRadius.all(Radius.circular(2)),
+                          child: SingleChildScrollView(
+                            controller: verticalScrollController,
+                            child: Padding(
+                              padding: const EdgeInsets.symmetric(vertical: 5),
+                              child: SizeChangedLayoutNotifier(
+                                child: Observer(builder: (context) {
+                                  return Column(
+                                    children:
+                                        project.generatorList.map<Widget>((id) {
+                                      return Padding(
+                                        padding:
+                                            const EdgeInsets.only(bottom: 1),
+                                        child: GeneratorRow(generatorID: id),
+                                      );
+                                    }).toList(),
+                                  );
+                                }),
                               ),
                             ),
                           ),
                         ),
-                        const SizedBox(width: 4),
-                        Scrollbar(
-                          controller: verticalScrollController,
-                          crossAxisSize: 17,
-                          direction: ScrollbarDirection.vertical,
-                        ),
-                      ],
-                    ),
+                      ),
+                      const SizedBox(width: 4),
+                      Scrollbar(
+                        controller: verticalScrollController,
+                        crossAxisSize: 17,
+                        direction: ScrollbarDirection.vertical,
+                      ),
+                    ],
                   ),
-                  const SizedBox(height: 4),
-                  SizedBox(
-                    height: 17,
-                    child: Row(
-                      crossAxisAlignment: CrossAxisAlignment.stretch,
-                      children: [
-                        const SizedBox(width: 136),
-                        Button(
-                          width: 105,
-                          contentPadding: EdgeInsets.zero,
-                          icon: Icons.add,
-                          hint: 'Add a new instrument',
-                          onPress: () async {
-                            final result = await FilePicker.platform.pickFiles(
-                              dialogTitle: 'Choose a plugin (VST3)',
-                              allowedExtensions: ['vst3'],
-                              initialDirectory:
-                                  'C:\\Program Files\\Common Files\\VST3',
-                            );
+                ),
+                const SizedBox(height: 4),
+                SizedBox(
+                  height: 17,
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      const SizedBox(width: 136),
+                      Button(
+                        width: 105,
+                        contentPadding: EdgeInsets.zero,
+                        icon: Icons.add,
+                        hint: 'Add a new instrument',
+                        onPress: () async {
+                          final result = await FilePicker.platform.pickFiles(
+                            dialogTitle: 'Choose a plugin (VST3)',
+                            allowedExtensions: ['vst3'],
+                            initialDirectory:
+                                'C:\\Program Files\\Common Files\\VST3',
+                          );
 
-                            final path = result?.files[0].path;
+                          final path = result?.files[0].path;
 
-                            if (path == null) return;
+                          if (path == null) return;
 
-                            controller!.addGenerator(
-                              name:
-                                  'Instrument ${(Random()).nextInt(100).toString()}',
-                              color: getColor(),
-                              pluginPath: path,
-                            );
-                          },
-                        ),
-                        const SizedBox(width: 24),
-                        const Expanded(child: SizedBox()),
-                      ],
-                    ),
+                          controller!.addGenerator(
+                            name:
+                                'Instrument ${(Random()).nextInt(100).toString()}',
+                            color: getColor(),
+                            pluginPath: path,
+                          );
+                        },
+                      ),
+                      const SizedBox(width: 24),
+                      const Expanded(child: SizedBox()),
+                    ],
                   ),
-                ],
-              ),
+                ),
+              ],
             ),
           ),
         ),

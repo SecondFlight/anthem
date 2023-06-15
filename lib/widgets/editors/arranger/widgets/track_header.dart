@@ -48,7 +48,7 @@ class TrackHeader extends StatelessWidget {
 
       return Container(
         decoration: BoxDecoration(
-          color: Theme.panel.accent,
+          color: Theme.panel.accentLight,
           borderRadius: BorderRadius.circular(1),
         ),
         child: Stack(

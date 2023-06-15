@@ -22,6 +22,7 @@ import 'package:anthem/model/pattern/pattern.dart';
 import 'package:anthem/model/project.dart';
 import 'package:anthem/model/shared/time_signature.dart';
 import 'package:anthem/theme.dart';
+import 'package:anthem/widgets/basic/background.dart';
 import 'package:anthem/widgets/basic/button.dart';
 import 'package:anthem/widgets/basic/controls/vertical_scale_control.dart';
 import 'package:anthem/widgets/basic/dropdown.dart';
@@ -84,7 +85,7 @@ class _PianoRollState extends State<PianoRoll> {
     final project = Provider.of<ProjectModel>(context);
 
     viewModel ??= PianoRollViewModel(
-      keyHeight: 20,
+      keyHeight: 15,
       // Hack: cuts off the top horizontal line. Otherwise the default view looks off
       keyValueAtTop: 63.95,
       timeView: TimeRange(0, 3072),
@@ -100,20 +101,16 @@ class _PianoRollState extends State<PianoRoll> {
       child: Provider.value(
         value: viewModel!,
         child: PianoRollTimeViewProvider(
-          child: Container(
-            color: Theme.panel.main,
-            child: Padding(
-              padding: const EdgeInsets.all(6),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  _PianoRollHeader(),
-                  const SizedBox(height: 4),
-                  const Expanded(
-                    child: _PianoRollContent(),
-                  ),
-                ],
-              ),
+          child: Background(
+            type: BackgroundType.dark,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                _PianoRollHeader(),
+                const Expanded(
+                  child: _PianoRollContent(),
+                ),
+              ],
             ),
           ),
         ),
@@ -149,95 +146,98 @@ class _PianoRollHeader extends StatelessWidget {
     final viewModel = Provider.of<PianoRollViewModel>(context);
 
     return SizedBox(
-      height: 26,
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          Menu(
-            menuDef: MenuDef(
-              children: [
-                AnthemMenuItem(
-                  text: 'Markers',
-                  submenu: MenuDef(
-                    children: [
-                      AnthemMenuItem(
-                        text: 'Add time signature change',
-                        hint: 'Add a time signature change',
-                        onSelected: () {
-                          final controller = Provider.of<PianoRollController>(
-                              context,
-                              listen: false);
-                          final timeView =
-                              Provider.of<TimeRange>(context, listen: false);
+      height: 38,
+      child: Padding(
+        padding: const EdgeInsets.all(6),
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            Menu(
+              menuDef: MenuDef(
+                children: [
+                  AnthemMenuItem(
+                    text: 'Markers',
+                    submenu: MenuDef(
+                      children: [
+                        AnthemMenuItem(
+                          text: 'Add time signature change',
+                          hint: 'Add a time signature change',
+                          onSelected: () {
+                            final controller = Provider.of<PianoRollController>(
+                                context,
+                                listen: false);
+                            final timeView =
+                                Provider.of<TimeRange>(context, listen: false);
 
-                          controller.addTimeSignatureChange(
-                            timeSignature: TimeSignatureModel(3, 4),
-                            offset: timeView.start.floor(),
-                            pianoRollWidth: _pianoRollCanvasSize.width,
-                          );
-                        },
-                      ),
-                    ],
-                  ),
-                ),
-              ],
-            ),
-            menuController: menuController,
-            child: Button(
-              width: 26,
-              icon: Icons.kebab,
-              onPress: () => menuController.open?.call(),
-            ),
-          ),
-          const SizedBox(width: 4),
-          Observer(builder: (context) {
-            return SizedBox(
-              width: 39,
-              child: Dropdown(
-                showNameOnButton: false,
-                allowNoSelection: false,
-                hint: 'Change the active tool',
-                selectedID: EditorTool.values
-                    .firstWhere(
-                      (tool) => tool.name == viewModel.tool.name,
-                    )
-                    .name,
-                items: [
-                  DropdownItem(
-                    id: EditorTool.pencil.name,
-                    name: 'Pencil',
-                    hint:
-                        'Pencil: left click to add notes, right click to delete',
-                    icon: Icons.tools.pencil,
-                  ),
-                  DropdownItem(
-                    id: EditorTool.eraser.name,
-                    name: 'Eraser',
-                    hint: 'Eraser: left click to delete notes',
-                    icon: Icons.tools.erase,
-                  ),
-                  DropdownItem(
-                    id: EditorTool.select.name,
-                    name: 'Select',
-                    hint: 'Select: left click and drag to select notes',
-                    icon: Icons.tools.select,
-                  ),
-                  DropdownItem(
-                    id: EditorTool.cut.name,
-                    name: 'Cut',
-                    hint: 'Cut: left click and drag to cut notes',
-                    icon: Icons.tools.cut,
+                            controller.addTimeSignatureChange(
+                              timeSignature: TimeSignatureModel(3, 4),
+                              offset: timeView.start.floor(),
+                              pianoRollWidth: _pianoRollCanvasSize.width,
+                            );
+                          },
+                        ),
+                      ],
+                    ),
                   ),
                 ],
-                onChanged: (id) {
-                  viewModel.tool = EditorTool.values.firstWhere(
-                    (tool) => tool.name == id,
-                  );
-                },
               ),
-            );
-          }),
-        ],
+              menuController: menuController,
+              child: Button(
+                width: 26,
+                icon: Icons.kebab,
+                onPress: () => menuController.open?.call(),
+              ),
+            ),
+            const SizedBox(width: 4),
+            Observer(builder: (context) {
+              return SizedBox(
+                width: 39,
+                child: Dropdown(
+                  showNameOnButton: false,
+                  allowNoSelection: false,
+                  hint: 'Change the active tool',
+                  selectedID: EditorTool.values
+                      .firstWhere(
+                        (tool) => tool.name == viewModel.tool.name,
+                      )
+                      .name,
+                  items: [
+                    DropdownItem(
+                      id: EditorTool.pencil.name,
+                      name: 'Pencil',
+                      hint:
+                          'Pencil: left click to add notes, right click to delete',
+                      icon: Icons.tools.pencil,
+                    ),
+                    DropdownItem(
+                      id: EditorTool.eraser.name,
+                      name: 'Eraser',
+                      hint: 'Eraser: left click to delete notes',
+                      icon: Icons.tools.erase,
+                    ),
+                    DropdownItem(
+                      id: EditorTool.select.name,
+                      name: 'Select',
+                      hint: 'Select: left click and drag to select notes',
+                      icon: Icons.tools.select,
+                    ),
+                    DropdownItem(
+                      id: EditorTool.cut.name,
+                      name: 'Cut',
+                      hint: 'Cut: left click and drag to cut notes',
+                      icon: Icons.tools.cut,
+                    ),
+                  ],
+                  onChanged: (id) {
+                    viewModel.tool = EditorTool.values.firstWhere(
+                      (tool) => tool.name == id,
+                    );
+                  },
+                ),
+              );
+            }),
+          ],
+        ),
       ),
     );
   }

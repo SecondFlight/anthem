@@ -49,7 +49,7 @@ class ProjectHeader extends StatelessWidget {
         borderRadius: const BorderRadius.vertical(
           bottom: Radius.circular(4),
         ),
-        color: Theme.panel.accent,
+        color: Theme.panel.accentLight,
       ),
       child: Padding(
         padding: const EdgeInsets.all(7),

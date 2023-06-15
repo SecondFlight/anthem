@@ -163,7 +163,8 @@ class _TabState extends State<_Tab> {
         children: [
           Container(
             width: 115,
-            color: widget.isSelected ? Theme.panel.accent : Theme.panel.main,
+            color:
+                widget.isSelected ? Theme.panel.accentLight : Theme.panel.main,
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [

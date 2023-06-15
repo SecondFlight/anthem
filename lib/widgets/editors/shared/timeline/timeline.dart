@@ -98,7 +98,7 @@ class _TimelineState extends State<Timeline> with TickerProviderStateMixin {
             clipBehavior: Clip.none,
             children: [
               Container(
-                color: Theme.panel.accent,
+                color: Theme.panel.accentLight,
                 child: ClipRect(
                   child: AnimatedBuilder(
                     animation: widget.timeViewAnimationController,

@@ -54,7 +54,7 @@ class _MainWindowState extends State<MainWindow> {
       value: controller,
       child: ScreenOverlay(
         child: Container(
-          color: Theme.panel.border,
+          color: Theme.background,
           child: Padding(
             padding: const EdgeInsets.all(3),
             child: Observer(builder: (context) {
