@@ -27,7 +27,7 @@ import 'package:anthem/widgets/basic/icon.dart';
 import 'package:anthem/widgets/basic/menu/menu.dart';
 import 'package:anthem/widgets/basic/menu/menu_model.dart';
 import 'package:anthem/widgets/basic/mobx_custom_painter.dart';
-import 'package:anthem/widgets/basic/scroll/scrollbar_renderer.dart';
+import 'package:anthem/widgets/basic/scroll/editor_scrollbar.dart';
 import 'package:anthem/widgets/basic/shortcuts/shortcut_consumer.dart';
 import 'package:anthem/widgets/editors/arranger/content_renderer.dart';
 import 'package:anthem/widgets/editors/arranger/event_listener.dart';
@@ -239,7 +239,7 @@ class _ArrangerState extends State<Arranger> {
                           ),
                           Observer(builder: (context) {
                             return Expanded(
-                              child: ScrollbarRenderer(
+                              child: EditorScrollbar(
                                 scrollRegionStart: 0,
                                 scrollRegionEnd: getHorizontalScrollRegionEnd(),
                                 handleStart: viewModel!.timeView.start,
@@ -289,7 +289,7 @@ class _ArrangerState extends State<Arranger> {
                             child: LayoutBuilder(
                               builder: (context, constraints) {
                                 return Observer(builder: (context) {
-                                  return ScrollbarRenderer(
+                                  return EditorScrollbar(
                                     scrollRegionStart: 0,
                                     scrollRegionEnd:
                                         viewModel!.scrollAreaHeight,

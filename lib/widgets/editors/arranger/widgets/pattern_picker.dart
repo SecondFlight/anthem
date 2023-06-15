@@ -27,7 +27,7 @@ import 'package:anthem/widgets/basic/button_tabs.dart';
 import 'package:anthem/widgets/basic/clip/clip.dart';
 import 'package:anthem/widgets/basic/controls/vertical_scale_control.dart';
 import 'package:anthem/widgets/basic/icon.dart';
-import 'package:anthem/widgets/basic/scroll/scrollbar.dart';
+import 'package:anthem/widgets/basic/scroll/old_scrollbar.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:provider/provider.dart';
 

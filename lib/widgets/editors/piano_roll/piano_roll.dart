@@ -30,7 +30,7 @@ import 'package:anthem/widgets/basic/icon.dart';
 import 'package:anthem/widgets/basic/menu/menu_model.dart';
 import 'package:anthem/widgets/basic/menu/menu.dart';
 import 'package:anthem/widgets/basic/panel.dart';
-import 'package:anthem/widgets/basic/scroll/scrollbar_renderer.dart';
+import 'package:anthem/widgets/basic/scroll/editor_scrollbar.dart';
 import 'package:anthem/widgets/basic/shortcuts/shortcut_consumer.dart';
 import 'package:anthem/widgets/editors/piano_roll/content_renderer.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
@@ -531,7 +531,7 @@ class _PianoRollContentState extends State<_PianoRollContent>
                   const SizedBox(width: pianoControlWidth + 1),
                   Expanded(
                     child: Observer(builder: (context) {
-                      return ScrollbarRenderer(
+                      return EditorScrollbar(
                         scrollRegionStart: 0,
                         scrollRegionEnd: getPattern()?.lastContent.toDouble() ??
                             (project.song.ticksPerQuarter * 4 * noContentBars)
@@ -596,7 +596,7 @@ class _PianoRollContentState extends State<_PianoRollContent>
                     width: 17,
                     child: LayoutBuilder(
                       builder: (context, constraints) {
-                        return ScrollbarRenderer(
+                        return EditorScrollbar(
                           scrollRegionStart: minKeyValue,
                           scrollRegionEnd: maxKeyValue,
                           handleStart: maxKeyValue - viewModel.keyValueAtTop,

@@ -38,7 +38,7 @@ class ScrollbarChangeEvent {
   });
 }
 
-class ScrollbarRenderer extends StatefulWidget {
+class EditorScrollbar extends StatefulWidget {
   // When rendering, the handle will never be smaller than this
   final double minHandlePixelSize;
 
@@ -62,7 +62,7 @@ class ScrollbarRenderer extends StatefulWidget {
   /// end is 1.
   final bool disableAtFullSize;
 
-  const ScrollbarRenderer({
+  const EditorScrollbar({
     Key? key,
     this.minHandlePixelSize = 24,
     this.minHandleSize = 0,
@@ -77,10 +77,10 @@ class ScrollbarRenderer extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  State<ScrollbarRenderer> createState() => _ScrollbarRendererState();
+  State<EditorScrollbar> createState() => _EditorScrollbarState();
 }
 
-class _ScrollbarRendererState extends State<ScrollbarRenderer> {
+class _EditorScrollbarState extends State<EditorScrollbar> {
   double startHandleStart = -1;
   double startHandleEnd = -1;
   double startPos = -1;

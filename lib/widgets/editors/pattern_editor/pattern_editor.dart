@@ -27,7 +27,7 @@ import 'package:anthem/widgets/basic/dropdown.dart';
 import 'package:anthem/widgets/basic/icon.dart';
 import 'package:anthem/widgets/basic/menu/menu.dart';
 import 'package:anthem/widgets/basic/menu/menu_model.dart';
-import 'package:anthem/widgets/basic/scroll/scrollbar.dart';
+import 'package:anthem/widgets/basic/scroll/old_scrollbar.dart';
 import 'package:anthem/widgets/editors/pattern_editor/pattern_editor_controller.dart';
 import 'package:anthem/widgets/project/project_controller.dart';
 import 'package:file_picker/file_picker.dart';
